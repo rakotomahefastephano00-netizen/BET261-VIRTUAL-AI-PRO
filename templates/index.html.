@@ -1,1 +1,61 @@
-
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BET261 VIRTUAL AI PRO V1.0</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body>
+<header><div class="brand">⚽ BET261 <span>VIRTUAL AI PRO</span></div><small>V1.0 · Collecteur & statistiques</small></header>
+<main>
+<section class="status card"><div><b>État du connecteur BET261</b><p id="apiStatus">Vérification…</p></div><span id="apiBadge" class="badge">…</span></section>
+<section class="grid">
+  <article class="card metric"><small>Matchs enregistrés</small><strong id="total">0</strong></article>
+  <article class="card metric"><small>Résultats terminés</small><strong id="finished">0</strong></article>
+</section>
+<section class="card">
+<h2>1. Ajouter un match</h2>
+<p class="muted">Enregistrez les équipes, les cotes 1/X/2 et, après le match, le score réel.</p>
+<form id="matchForm">
+<div class="fields">
+<label>Championnat<input name="league" value="English League"></label>
+<label>Journée<input name="round_name" placeholder="Journée 23"></label>
+<label>Heure<input name="kickoff" placeholder="22:06"></label>
+<label>Équipe domicile<input name="home" required placeholder="Liverpool"></label>
+<label>Équipe extérieure<input name="away" required placeholder="N. Forest"></label>
+<label>Cote 1<input name="odd1" type="number" step="0.01"></label>
+<label>Cote X<input name="oddx" type="number" step="0.01"></label>
+<label>Cote 2<input name="odd2" type="number" step="0.01"></label>
+<label>Buts domicile<input name="home_goals" type="number" min="0" max="30"></label>
+<label>Buts extérieur<input name="away_goals" type="number" min="0" max="30"></label>
+</div><button>Enregistrer le match</button>
+</form>
+</section>
+<section class="card">
+<h2>2. Importer une capture BET261 (OCR)</h2>
+<p class="muted">Choisissez une capture de la page Matchs ou Résultats. Le texte reconnu sera affiché pour vérification : rien n'est enregistré automatiquement sans validation.</p>
+<input id="imageInput" type="file" accept="image/*">
+<button id="ocrBtn" type="button" class="secondary">Lire la capture</button>
+<textarea id="ocrText" rows="8" placeholder="Le texte reconnu apparaîtra ici…"></textarea>
+<p class="muted">L'OCR peut confondre les noms, les cotes ou les scores. Vérifiez toujours avant de saisir les données.</p>
+</section>
+<section class="card">
+<div class="row"><h2>3. Historique</h2><button id="refreshBtn" class="secondary" type="button">Actualiser</button></div>
+<div class="tablewrap"><table><thead><tr><th>Match</th><th>Cotes 1/X/2</th><th>Score</th><th>Source</th></tr></thead><tbody id="matchRows"><tr><td colspan="4">Aucun match enregistré.</td></tr></tbody></table></div>
+<a class="download" href="/api/export.csv">⬇ Exporter l'historique CSV</a>
+</section>
+<section class="card">
+<h2>4. Analyse historique</h2>
+<p class="muted">Fréquences des scores observés dans tes propres données, pas une garantie sur les prochains matchs.</p>
+<div id="frequencies" class="frequencies">Aucun résultat terminé.</div>
+<form id="predictForm" class="predict">
+<input name="home" placeholder="Équipe domicile" required>
+<input name="away" placeholder="Équipe extérieure" required>
+<button>Analyser l'historique</button>
+</form><pre id="prediction"></pre>
+</section>
+</main>
+<footer>BET261 VIRTUAL AI PRO · Ne saisissez jamais votre mot de passe BET261 dans cette application.</footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body></html>
